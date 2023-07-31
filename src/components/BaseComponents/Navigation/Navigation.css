@@ -1,0 +1,136 @@
+.navigation__button {
+  color: #000;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+  width: 76px;
+  height: 32px;
+  background-color: #3DDC84;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.8;
+  transition: opacity 1s;
+}
+
+.navigation__button_margin {
+  margin-right: 70px;
+}
+
+.navigation__link {
+  color: #FFF;
+  text-align: right;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.navigation__link:hover {
+  opacity: 0.8;
+  transition: opacity 1s;
+}
+
+.navigation__link_margin {
+  margin-right: 30px;
+  margin-left: auto;
+}
+
+.navigation__link-movies {
+  color: #FFF;
+  text-align: right;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  transition: opacity 1s;
+  cursor: pointer;
+}
+
+.navigation__link-movies:hover {
+  opacity: .7;
+}
+
+.navigation__link-movies_active {
+  font-weight: 500;
+}
+
+.navigation__link-movies:nth-child(2) {
+  margin-left: auto;
+  margin-right: 20px;
+}
+
+.navigation__profile-icon {
+  margin-right: 55px;
+  margin-left: 50px;
+  transition: opacity 1s;
+  cursor: pointer;
+  transform: translateY(+5%);
+}
+
+.navigation__profile-icon:hover {
+  opacity: .7
+}
+
+.navigation__stripes {
+  display: none;
+}
+
+.navigation__cross {
+  display: none;
+}
+
+
+@media screen and (max-width: 850px) {
+  .navigation__button_margin {
+    margin-right: 30px;
+  }
+
+  .navigation__profile-icon {
+    display: none;
+  }
+
+  .navigation__link-movies {
+    display: none;
+  }
+
+  .navigation__stripes {
+    display: block;
+    margin-right: 30px;
+    margin-left: auto;
+    z-index: 4;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .navigation__button_margin {
+    margin-right: 14px;
+  }
+
+  .navigation__button {
+    font-size: 10px;
+    width: 54px;
+    height: 26px;
+  }
+
+  .navigation__link {
+    font-size: 10px;
+  }
+
+  .navigation__link_margin {
+    margin-right: 14px;
+  }
+
+  .navigation__stripes {
+    width: 37px;
+    height: 43px;
+    margin-right: 18px;
+  }
+}

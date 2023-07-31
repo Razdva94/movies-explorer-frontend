@@ -1,0 +1,46 @@
+.movie-card__pic {
+  width: 100%;
+  height: auto;
+
+  flex-shrink: 0;
+}
+
+.movie-card__description-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  height: 24px;
+}
+
+.movie-card__description {
+  color: #FFF;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin: 0;
+}
+
+.movie-card__icon {
+  height: 24px;
+  width: 24px;
+  transform: translateY(-20%);
+  cursor: pointer;
+}
+
+.movie-card__duration {
+  color: #8B8B8B;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0;
+  padding-top: 6px;
+}
+
+@media screen and (max-width: 450px) {
+  .movie-card__description {
+    font-size: 12px;
+  }
+}
