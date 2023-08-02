@@ -9,7 +9,8 @@
   float: right;
   height: 327px;
   border-radius: 10px;
-  margin-left: 50px;
+  margin-left: 30px;
+  margin-bottom: 30px
 }
 
 .about-me__title {
@@ -88,7 +89,6 @@
   .about-me__text {
     font-size: 12px;
     line-height: 18px;
-    max-width: 364px;
   }
 
   .about-me__me {

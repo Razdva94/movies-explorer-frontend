@@ -108,6 +108,8 @@
   font-weight: 400;
   line-height: normal;
   margin: 0;
+  display: flex;
+  justify-content: center;
 }
 
 .register__text_margin {
@@ -135,7 +137,7 @@
   }
 
   .register {
-    padding-bottom: 232px;
+    padding-bottom: 115px;
   }
 
   .login__button_margin {
@@ -173,15 +175,15 @@
   }
 
   .register__text {
-    display: flex;
     font-size: 12px;
-  }
-
-  .register__text_color_blue{
-    margin-left: 7px;
   }
 
   .register__button_margin {
     margin-top: 212px;
   }
+
+  .register {
+    padding-bottom: 13px;
+  }
+
 }

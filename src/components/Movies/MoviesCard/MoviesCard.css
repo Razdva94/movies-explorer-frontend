@@ -1,7 +1,10 @@
+
+.movie-card{
+  height: auto;
+}
 .movie-card__pic {
   width: 100%;
-  height: auto;
-
+  aspect-ratio: 1.788;
   flex-shrink: 0;
 }
 

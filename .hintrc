@@ -9,7 +9,8 @@
         "ignore": [
           "-webkit-text-size-adjust",
           "text-underline-offset",
-          "width: fit-content"
+          "width: fit-content",
+          "aspect-ratio"
         ]
       }
     ]

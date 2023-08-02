@@ -7,10 +7,11 @@
 
 .movies-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  grid-template-columns: repeat(auto-fit, 269px);
   column-gap: 20px;
   row-gap: 38px;
   min-height: 295px;
+  justify-content: center;
 }
 
 .movies-container_button-container {
@@ -51,7 +52,7 @@
   }
 }
 
-@media screen and (max-width: 450px){
+@media screen and (max-width: 450px) {
   .movies-container {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     column-gap: 30px;

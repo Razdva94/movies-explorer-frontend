@@ -8,8 +8,16 @@ import Profile from '../Authorization/Profile/Profile';
 import Register from '../Authorization/Register/Register';
 import Login from '../Authorization/Login/Login';
 import Error404 from '../Error404/Error404';
+// import moviesApi from '../../utils/MoviesApi';
 
 const App = () => {
+  // useEffect(() => {
+  //   moviesApi.getMovies()
+  //     . then((res) => {
+  //       console.log(res);
+  //     });
+  // }, []);
+
   const registerInputs = [
     { title: 'Имя', type: 'text' },
     { title: 'E-mail', type: 'e-mail' },
@@ -31,7 +39,7 @@ const App = () => {
   ];
   const buttonLogin = ['Войти', 'Еще не зарегистрированы?', ' Регистрация'];
   return (
-    <body className="body">
+    <div className="body">
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/movies" element={<Movies />} />
@@ -61,7 +69,7 @@ const App = () => {
         />
         <Route path="/error-404" element={<Error404 />} />
       </Routes>
-    </body>
+    </div>
   );
 };
 
