@@ -1,8 +1,16 @@
 import React from 'react';
 import Register from '../Register/Register';
 
-const Login = ({ inputs, margin, sayHi, button }) => {
-  return <Register inputs={inputs} margin={margin} sayHi={sayHi} button={button} />;
+const Login = ({ inputs, margin, sayHi, button, onLoggedIn }) => {
+  return (
+    <Register
+      inputs={inputs}
+      margin={margin}
+      sayHi={sayHi}
+      button={button}
+      onLoggedIn={onLoggedIn}
+    />
+  );
 };
 
 export default Login;

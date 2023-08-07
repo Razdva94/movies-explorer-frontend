@@ -3,6 +3,9 @@
   padding-left: 70px;
   padding-right: 70px;
   padding-top: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .movies-container {
@@ -12,6 +15,7 @@
   row-gap: 38px;
   min-height: 295px;
   justify-content: center;
+  max-width: 1420px;
 }
 
 .movies-container_button-container {
@@ -38,6 +42,11 @@
   margin-top: 60px;
 }
 
+@media screen and (max-width: 1200px) {
+  .movies {
+    align-items: normal;
+  }
+}
 @media screen and (max-width: 850px) {
   .movies {
     padding-left: 30px;

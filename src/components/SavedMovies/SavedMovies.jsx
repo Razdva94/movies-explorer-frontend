@@ -1,18 +1,20 @@
-import React from 'react';
-import Header from '../BaseComponents/Header/Header';
-import SearchForm from '../Movies/SearchForm/SearchForm';
-import MoviesCardList from '../Movies/MoviesCardList/MoviesCardList';
-import Footer from '../BaseComponents/Footer/Footer';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import mainApi from '../../utils/MainApi';
+import Movies from '../Movies/Movies';
 
 const SavedMovies = () => {
-  return (
-    <>
-      <Header />
-      <SearchForm />
-      <MoviesCardList />
-      <Footer />
-    </>
-  );
+  const [savedMovies, setSavedMovies] = useState([]);
+  const location = useLocation();
+  useEffect(() => {
+    mainApi
+      .getSavedMovies()
+      .then((res) => {
+        setSavedMovies(res);
+      })
+      .catch((err) => console.log(err));
+  }, [location.pathname]);
+  return <Movies savedMovies={savedMovies} />;
 };
 
 export default SavedMovies;

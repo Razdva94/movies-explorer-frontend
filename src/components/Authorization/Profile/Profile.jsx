@@ -6,6 +6,7 @@ import './Profile.css';
 const Profile = () => {
   const navigate = useNavigate();
   const onExit = () => {
+    localStorage.clear();
     navigate('/');
   };
   return (

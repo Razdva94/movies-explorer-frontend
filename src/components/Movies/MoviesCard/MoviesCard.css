@@ -6,6 +6,8 @@
   width: 100%;
   aspect-ratio: 1.788;
   flex-shrink: 0;
+  cursor: pointer;
+  display: block;
 }
 
 .movie-card__description-container {
