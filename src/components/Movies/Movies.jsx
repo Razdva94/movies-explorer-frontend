@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './Movies.css';
 import Header from '../BaseComponents/Header/Header';
 import SearchForm from './SearchForm/SearchForm';
@@ -15,8 +15,10 @@ import {
   errorKeyWord,
   errorRequest,
 } from '../../utils/constants';
+import mainApi from '../../utils/MainApi';
 
-const Movies = ({ savedMovies }) => {
+const Movies = ({ savedMovies, deleteMovie }) => {
+  const navigate = useNavigate();
   const location = useLocation();
   const [movies, setMovies] = useState(null);
   const [tumbValue, setTumbValue] = useState(false);
@@ -32,7 +34,7 @@ const Movies = ({ savedMovies }) => {
   const [isSearched, setIsSearched] = useState(false);
 
   const savedPrintedString = JSON.parse(localStorage.getItem('printedString'));
-  const savedTumvValue = JSON.parse(localStorage.getItem('tumbValue'));
+  const savedTumbValue = JSON.parse(localStorage.getItem('tumbValue'));
   const savedFilteredMovies = JSON.parse(
     localStorage.getItem('filteredMovies')
   );
@@ -49,7 +51,7 @@ const Movies = ({ savedMovies }) => {
     if (tumbValue) {
       filteredMovies = filteredMovies.filter((movie) => movie.duration < 40);
     }
-    if (location.pathname === '/movies'){
+    if (location.pathname === '/movies') {
       localStorage.setItem('printedString', JSON.stringify(string));
       localStorage.setItem('tumbValue', JSON.stringify(tumbValue));
       localStorage.setItem('filteredMovies', JSON.stringify(filteredMovies));
@@ -69,29 +71,39 @@ const Movies = ({ savedMovies }) => {
     } else {
       setNeedKeyWord(false);
       setEmptyMessage(false);
-      if (location.pathname === '/movies'){
+      if (location.pathname === '/movies') {
         setSearchedMovies(filterSearch(searchValue, res));
       }
-      if (location.pathname === '/saved-movies'){
+      if (location.pathname === '/saved-movies') {
         setIsSearched(true);
         setSearchedSavedMovies(filterSearch(searchValue, res));
       }
     }
   };
 
+  const onSetMovie = (movies, savedMovies) => {
+    return movies.reduce((arr, movie) => {
+      arr.push(movie);
+      if (savedMovies.some((savedMovie) => savedMovie.movieId === movie.id)) {
+        movie.saved = true;
+      } else {
+        movie.saved = false;
+      }
+      return arr;
+    }, []);
+  };
   const onSubmitSearch = useCallback((searchValue) => {
-    if (location.pathname === '/movies'){
+    if (location.pathname === '/movies') {
       localStorage.removeItem('filteredMovies');
       localStorage.removeItem('tumbValue');
       localStorage.removeItem('printedString');
     }
     if (!movies && location.pathname === '/movies') {
       setLoading(true);
-      moviesApi
-        .getMovies()
-        .then((res) => {
-          setMovies(res);
-          handleSearch(searchValue, res);
+      Promise.all([moviesApi.getMovies(), mainApi.getSavedMovies()])
+        .then(([movies, savedMovies]) => {
+          setMovies(onSetMovie(movies, savedMovies));
+          handleSearch(searchValue, onSetMovie(movies, savedMovies));
         })
         .catch((error) => {
           setError(true);
@@ -102,13 +114,12 @@ const Movies = ({ savedMovies }) => {
         });
     } else if (location.pathname === '/saved-movies') {
       handleSearch(searchValue, savedMovies);
+      console.log(savedMovies);
     } else {
       handleSearch(searchValue, movies);
     }
   });
-
   const onTumbClick = (searchValue) => {
-    console.log(searchValue);
     setTumbValue(!tumbValue);
     setCurrentSearchValue(searchValue);
     setShouldSubmit(true);
@@ -119,15 +130,22 @@ const Movies = ({ savedMovies }) => {
       onSubmitSearch(currentSearchValue);
       setShouldSubmit(false);
     }
-  },
-  [shouldSubmit, currentSearchValue, onSubmitSearch]);
+  }, [shouldSubmit, currentSearchValue, onSubmitSearch]);
 
   useEffect(() => {
-    if (location.pathname === '/movies'){
+    if (location.pathname === '/movies') {
       setSearchedMovies(savedFilteredMovies);
-      setTumbValue(savedTumvValue);
+      setTumbValue(savedTumbValue);
     }
   }, []);
+
+  useEffect(() => {
+    mainApi.getUser().catch((err) => {
+      localStorage.clear();
+      navigate('/');
+      console.log(err);
+    });
+  });
   return (
     <>
       <Header />
@@ -147,7 +165,8 @@ const Movies = ({ savedMovies }) => {
         <Error message={errorRequest} />
       ) : (
         <MoviesCardList
-          allMovies={movies === null ? savedFilteredMovies : movies}
+          deleteMovie={deleteMovie}
+          savedFilteredMovies={movies === null ? savedFilteredMovies : movies}
           searchedMovies={searchedMovies || ''}
           clickCounter={clickCounter}
           setClickCounter={setClickCounter}

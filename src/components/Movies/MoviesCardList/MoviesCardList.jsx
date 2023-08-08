@@ -9,9 +9,10 @@ const MoviesCardList = ({
   clickCounter,
   setClickCounter,
   savedMovies,
-  allMovies,
+  savedFilteredMovies,
   searchedSavedMovies,
   isSearched,
+  deleteMovie,
 }) => {
   const location = useLocation();
   const [elseButton, setElseButton] = useState(false);
@@ -34,9 +35,7 @@ const MoviesCardList = ({
       const slicedMovies = moviesList.slice(0, maxMoviesToShow);
       if (maxMoviesToShow > slicedMovies.length) {
         setElseButton(false);
-      } else {
-        setElseButton(true);
-      }
+      } else if (location.pathname === '/movies') setElseButton(true);
     },
     [maxMoviesToShow]
   );
@@ -55,22 +54,8 @@ const MoviesCardList = ({
   useEffect(() => {
     if (location.pathname === '/movies' && searchedMovies !== '') {
       renderElseButton(searchedMovies);
-    } else if (location.pathname === '/saved-movies') {
-      if (isSearched && searchedSavedMovies !== '') {
-        renderElseButton(searchedSavedMovies);
-      } else {
-        renderElseButton(savedMovies);
-      }
     }
-  }, [
-    searchedMovies,
-    maxMoviesToShow,
-    savedMovies,
-    location.pathname,
-    renderElseButton,
-    isSearched,
-    searchedSavedMovies,
-  ]);
+  }, [searchedMovies, maxMoviesToShow, location.pathname, renderElseButton]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -91,20 +76,22 @@ const MoviesCardList = ({
       if (maxMoviesToShow >= searchedMovies.length) {
         setElseButton(false);
       }
-    } else if (location.pathname === '/saved-movies') {
-      if (maxMoviesToShow >= savedMovies.length) {
-        setElseButton(false);
-      }
     }
   }, [location.pathname, maxMoviesToShow, searchedSavedMovies, savedMovies]);
 
-  const renderMovies = (movies, maxMoviesToShow, allMovies) => {
+  const renderMovies = (movies, maxMoviesToShow, savedFilteredMovies) => {
     if (movies !== '' && Array.isArray(movies)) {
-      const slicedMovies = movies.slice(0, maxMoviesToShow);
+      const slicedMovies =
+        location.pathname === '/movies'
+          ? movies.slice(0, maxMoviesToShow)
+          : movies;
       return slicedMovies.map((movie, index) => (
         <MoviesCard
-          movieId={movie.id}
-          allMovies={allMovies}
+          isSaved={movie.saved}
+          savedMovies={savedMovies}
+          deleteMovie={deleteMovie}
+          movieId={location.pathname === '/movies' ? movie.id : movie.movieId}
+          savedFilteredMovies={savedFilteredMovies}
           key={index}
           movieName={movie.nameRU}
           movieDuration={`${Math.floor(movie.duration / 60)}ч${
@@ -125,7 +112,7 @@ const MoviesCardList = ({
     <section className="movies">
       <div className="movies-container">
         {location.pathname === '/movies'
-          ? renderMovies(searchedMovies, maxMoviesToShow, allMovies)
+          ? renderMovies(searchedMovies, maxMoviesToShow, savedFilteredMovies)
           : !isSearched
             ? renderMovies(savedMovies, maxMoviesToShow)
             : renderMovies(searchedSavedMovies, maxMoviesToShow)}

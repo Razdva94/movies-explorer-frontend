@@ -1,3 +1,4 @@
+/* eslint-disable no-sequences */
 class MainApi {
   constructor(options) {
     this._headers = options.headers;
@@ -14,6 +15,13 @@ class MainApi {
   getSavedMovies() {
     return this._request(`${this._url}/movies`, {
       method: 'GET',
+      headers: this._headers,
+    });
+  }
+
+  deleteCardFromServer(_id) {
+    return this._request(`${this._url}/movies/${_id}`, {
+      method: 'DELETE',
       headers: this._headers,
     });
   }
@@ -62,9 +70,7 @@ class MainApi {
     nameRU,
     nameEN,
   }) {
-    console.log(movieId);
     const image = `https://api.nomoreparties.co/${imageUrl.url}`;
-    console.log(image);
     const thumbnail = `https://api.nomoreparties.co/${imageUrl.formats.thumbnail.url}`;
     return this._request(`${this._url}/movies`, {
       method: 'POST',
@@ -86,11 +92,11 @@ class MainApi {
   }
 
   _checkResponse(res) {
+    console.log(res);
     if (res.ok) {
       return res.json();
     }
-    console.log(res);
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return (Promise.reject(res));
   }
 
   _request(url, options) {

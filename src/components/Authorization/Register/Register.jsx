@@ -74,24 +74,24 @@ const Register = ({ inputs, margin, sayHi, button, onLoggedIn }) => {
         })
         .catch((err) => {
           setSavedErrorValue(e.target[1].value);
-          if (err === 'Ошибка: 409') {
+          if (err.status === 409) {
             setServerErrors('Пользователь с таким email уже существует.');
           } else {
             setServerErrors('При регистрации пользователя произошла ошибка.');
           }
         });
     } else if (location.pathname === '/signin') {
-      mainApi
-        .postToSignin(values)
+      Promise.all([mainApi.getUser(), mainApi.postToSignin(values)])
         .then(() => {
           onLoggedIn();
           localStorage.setItem('validated', true);
           navigate('/movies');
         })
         .catch((err) => {
+          console.log(err);
           setSavedErrorValue(e.target[1].value);
-          if (err === 'Ошибка: 409') {
-            setServerErrors('Пользователь с таким email уже существует.');
+          if (err.status === 401) {
+            setServerErrors('Вы ввели неправильный логин или пароль.');
           } else {
             setServerErrors('При регистрации пользователя произошла ошибка.');
           }

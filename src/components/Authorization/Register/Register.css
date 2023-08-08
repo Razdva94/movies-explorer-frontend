@@ -152,6 +152,7 @@
 
 .register__server-error-container {
   position: relative;
+  width: 100%;
 }
 
 .register__server-error {
@@ -159,9 +160,13 @@
   color: #FF004C;
   text-align: center;
   font-size: 11px;
-  width: 410px;
+  max-width: 410px;
   min-height: 14px;
   bottom: 40px;
+  width: 100%;
+}
+.register__input-container{
+  align-self: flex-start;
 }
 
 @media screen and (max-width: 850px) {
