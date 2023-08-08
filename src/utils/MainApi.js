@@ -96,7 +96,7 @@ class MainApi {
     if (res.ok) {
       return res.json();
     }
-    return (Promise.reject(res));
+    return (Promise.reject(res.json));
   }
 
   _request(url, options) {
