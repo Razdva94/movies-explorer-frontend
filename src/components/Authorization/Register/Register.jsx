@@ -83,6 +83,11 @@ const Register = ({
               mainApi
                 .getUser()
                 .then((res) => updateContextValue(res))
+                .then(() => {
+                  onLoggedIn();
+                  localStorage.setItem('validated', true);
+                  navigate('/movies');
+                })
                 .catch((err) => {
                   console.log(err);
                   setServerErrors(
@@ -90,11 +95,6 @@ const Register = ({
                   );
                 })
             )
-            .then(() => {
-              onLoggedIn();
-              localStorage.setItem('validated', true);
-              navigate('/movies');
-            })
             .catch((err) => {
               setServerErrors('При регистрации пользователя произошла ошибка.');
               console.log(err);
