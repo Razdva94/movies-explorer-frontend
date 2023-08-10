@@ -115,6 +115,11 @@ const Register = ({
           mainApi
             .getUser()
             .then((res) => updateContextValue(res))
+            .then(() => {
+              onLoggedIn();
+              localStorage.setItem('validated', true);
+              navigate('/movies');
+            })
             .catch((err) => {
               console.log(err);
               setServerErrors(
@@ -122,11 +127,6 @@ const Register = ({
               );
             })
         )
-        .then(() => {
-          onLoggedIn();
-          localStorage.setItem('validated', true);
-          navigate('/movies');
-        })
         .catch((err) => {
           if (!err.message.includes('авторизация')) {
             setServerErrors('Вы ввели неправильный логин или пароль.');
