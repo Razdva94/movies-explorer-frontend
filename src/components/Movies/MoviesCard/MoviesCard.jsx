@@ -40,8 +40,6 @@ const MoviesCard = ({
           .catch((err) => {
             console.log(err);
           });
-
-        console.log(savedFilteredMovies);
       } else if (e.target.src.includes('Active')) {
         mainApi.getSavedMovies()
           .then((res) => {

@@ -34,7 +34,10 @@ const Navigation = () => {
   };
 
   let navigationContent;
-  if (location.pathname === '/') {
+  if (
+    location.pathname === '/' &&
+    localStorage.getItem('validated') !== 'true'
+  ) {
     navigationContent = (
       <>
         <p
@@ -56,12 +59,20 @@ const Navigation = () => {
     navigationContent = (
       <>
         <p
-          className="navigation__link-movies navigation__link-movies_active"
+          className={`navigation__link-movies ${
+            location.pathname === '/movies' && 'navigation__link-movies_active'
+          }`}
           onClick={onNavigateFilms}
         >
           Фильмы
         </p>
-        <p className="navigation__link-movies" onClick={onNavigateSavedFilms}>
+        <p
+          className={`navigation__link-movies ${
+            location.pathname === '/saved-movies' &&
+            'navigation__link-movies_active'
+          }`}
+          onClick={onNavigateSavedFilms}
+        >
           Сохранённые фильмы
         </p>
         <img

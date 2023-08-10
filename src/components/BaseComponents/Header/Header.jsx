@@ -8,9 +8,7 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const onNavigateMain = () => {
-    if (location.pathname !== '/profile') {
-      navigate('/');
-    }
+    navigate('/');
   };
   return (
     <header

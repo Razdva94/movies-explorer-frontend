@@ -91,12 +91,22 @@ class MainApi {
     });
   }
 
+  changeProfileInfo({ name, email }) {
+    return this._request(`${this._url}/users/me`, {
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify({
+        name,
+        email,
+      }),
+    });
+  }
+
   _checkResponse(res) {
-    console.log(res);
     if (res.ok) {
       return res.json();
     }
-    return (Promise.reject(res.json()));
+    return res.json().then((error) => Promise.reject(error));
   }
 
   _request(url, options) {

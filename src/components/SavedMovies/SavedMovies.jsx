@@ -18,7 +18,7 @@ const SavedMovies = () => {
       })
       .catch((err) => {
         console.log(err);
-        if (err === 'Ошибка: 401') {
+        if (err.statusCode === 401) {
           localStorage.clear();
           navigate('/');
         }

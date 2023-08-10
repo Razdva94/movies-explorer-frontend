@@ -6,7 +6,14 @@ import useForm from '../../../hooks/useForm';
 import mainApi from '../../../utils/MainApi';
 import './Register.css';
 
-const Register = ({ inputs, margin, sayHi, button, onLoggedIn }) => {
+const Register = ({
+  inputs,
+  margin,
+  sayHi,
+  button,
+  onLoggedIn,
+  updateContextValue,
+}) => {
   const location = useLocation();
   const [serverErrors, setServerErrors] = useState(null);
   const [errors, setErrors] = useState({});
@@ -69,31 +76,64 @@ const Register = ({ inputs, margin, sayHi, button, onLoggedIn }) => {
     if (location.pathname === '/signup') {
       mainApi
         .postToSignup(values)
-        .then(() => {
-          navigate('/signin');
-        })
+        .then(() =>
+          mainApi
+            .postToSignin(values)
+            .then(() =>
+              mainApi
+                .getUser()
+                .then((res) => updateContextValue(res))
+                .catch((err) => {
+                  console.log(err);
+                  setServerErrors(
+                    'При регистрации пользователя произошла ошибка.'
+                  );
+                })
+            )
+            .then(() => {
+              onLoggedIn();
+              localStorage.setItem('validated', true);
+              navigate('/movies');
+            })
+            .catch((err) => {
+              setServerErrors('При регистрации пользователя произошла ошибка.');
+              console.log(err);
+            })
+        )
         .catch((err) => {
           setSavedErrorValue(e.target[1].value);
-          if (err.status === 409) {
+          if (err.statusCode === 409) {
             setServerErrors('Пользователь с таким email уже существует.');
           } else {
             setServerErrors('При регистрации пользователя произошла ошибка.');
           }
         });
     } else if (location.pathname === '/signin') {
-      Promise.all([mainApi.getUser(), mainApi.postToSignin(values)])
+      mainApi
+        .postToSignin(values)
+        .then(() =>
+          mainApi
+            .getUser()
+            .then((res) => updateContextValue(res))
+            .catch((err) => {
+              console.log(err);
+              setServerErrors(
+                'При авторизации произошла ошибка. Токен не передан или передан не в том формате.'
+              );
+            })
+        )
         .then(() => {
           onLoggedIn();
           localStorage.setItem('validated', true);
           navigate('/movies');
         })
         .catch((err) => {
-          console.log(err);
-          setSavedErrorValue(e.target[1].value);
-          if (err.status === 401) {
+          if (!err.message.includes('авторизация')) {
             setServerErrors('Вы ввели неправильный логин или пароль.');
           } else {
-            setServerErrors('При регистрации пользователя произошла ошибка.');
+            setServerErrors(
+              'При авторизации произошла ошибка. Токен не передан или передан не в том формате.'
+            );
           }
         });
     }
@@ -113,7 +153,6 @@ const Register = ({ inputs, margin, sayHi, button, onLoggedIn }) => {
       serverErrors
     );
   };
-
   return (
     <section className="register">
       <form

@@ -9,6 +9,7 @@ import Profile from '../Authorization/Profile/Profile';
 import Register from '../Authorization/Register/Register';
 import Login from '../Authorization/Login/Login';
 import Error404 from '../Error404/Error404';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 import {
   registerInputs,
@@ -24,11 +25,14 @@ import {
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState(null);
   const [loggedIn, setLoggedin] = useState(false);
   const onLoggedIn = () => {
     setLoggedin(true);
   };
-
+  const updateContextValue = (value) => {
+    setCurrentUser(value);
+  };
   if (location.pathname === '/movies') {
     localStorage.setItem('location', '/movies');
   } else if (location.pathname === '/profile') {
@@ -66,7 +70,11 @@ const App = () => {
           path="/profile"
           element={(
             <ProtectedRouteElement
-              component={<Profile />}
+              component={(
+                <CurrentUserContext.Provider value={currentUser}>
+                  <Profile updateContextValue={updateContextValue} />
+                </CurrentUserContext.Provider>
+              )}
               loggedIn={loggedIn}
             />
           )}
@@ -75,6 +83,8 @@ const App = () => {
           path="/signup"
           element={(
             <Register
+              updateContextValue={updateContextValue}
+              onLoggedIn={onLoggedIn}
               inputs={registerInputs}
               margin={registerMargin}
               sayHi={sayHiRegister}
@@ -86,6 +96,7 @@ const App = () => {
           path="/signin"
           element={(
             <Login
+              updateContextValue={updateContextValue}
               inputs={loginInputs}
               margin={loginMargin}
               sayHi={sayHiLogin}
@@ -94,7 +105,7 @@ const App = () => {
             />
           )}
         />
-        <Route path="/error-404" element={<Error404 />} />
+        <Route path="/*" element={<Error404 />} />
       </Routes>
     </div>
   );

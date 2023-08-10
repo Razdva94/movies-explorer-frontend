@@ -38,7 +38,6 @@ const Movies = ({ savedMovies, deleteMovie }) => {
   const savedFilteredMovies = JSON.parse(
     localStorage.getItem('filteredMovies')
   );
-
   const filterSearch = (string, res) => {
     if (string.trim() === '') {
       return '';
@@ -106,6 +105,10 @@ const Movies = ({ savedMovies, deleteMovie }) => {
           handleSearch(searchValue, onSetMovie(movies, savedMovies));
         })
         .catch((error) => {
+          if (error.statusCode === 401){
+            localStorage.clear();
+            navigate('/');
+          }
           setError(true);
           console.log(error);
         })
@@ -139,13 +142,6 @@ const Movies = ({ savedMovies, deleteMovie }) => {
     }
   }, []);
 
-  useEffect(() => {
-    mainApi.getUser().catch((err) => {
-      localStorage.clear();
-      navigate('/');
-      console.log(err);
-    });
-  });
   return (
     <>
       <Header />
