@@ -140,7 +140,7 @@ const Movies = ({ savedMovies, deleteMovie }) => {
     if (location.pathname === '/movies') {
       setSearchedMovies(savedFilteredMovies);
       setTumbValue(savedTumbValue);
-      setMovies(localStorage.getItem('allMovies'));
+      setMovies(JSON.parse(localStorage.getItem('allMovies')));
     }
   }, []);
 
