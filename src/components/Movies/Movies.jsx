@@ -102,6 +102,7 @@ const Movies = ({ savedMovies, deleteMovie }) => {
       Promise.all([moviesApi.getMovies(), mainApi.getSavedMovies()])
         .then(([movies, savedMovies]) => {
           setMovies(onSetMovie(movies, savedMovies));
+          localStorage.setItem('allMovies', JSON.stringify(movies));
           handleSearch(searchValue, onSetMovie(movies, savedMovies));
         })
         .catch((error) => {
@@ -139,6 +140,7 @@ const Movies = ({ savedMovies, deleteMovie }) => {
     if (location.pathname === '/movies') {
       setSearchedMovies(savedFilteredMovies);
       setTumbValue(savedTumbValue);
+      setMovies(localStorage.getItem('allMovies'));
     }
   }, []);
 
