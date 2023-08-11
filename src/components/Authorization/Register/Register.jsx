@@ -207,7 +207,7 @@ const Register = ({
           {button[1]}
           {'\u00A0'}
           <span
-            className="register text register__text_color_blue"
+            className="register__text register__text_color_blue"
             onClick={onNavigateLoginOrRegister}
           >
             {button[2]}

@@ -2,7 +2,7 @@
   display: flex;
   background-color: #202020;
   justify-content: center;
-  padding-bottom: 70px;
+  height: 100vh;
 }
 
 .register__container {
@@ -177,10 +177,6 @@
 
   .register__button_margin {
     margin-top: 120px;
-  }
-
-  .register {
-    padding-bottom: 115px;
   }
 
   .login__button_margin {

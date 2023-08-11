@@ -60,39 +60,36 @@ const Profile = ({ updateContextValue }) => {
   };
   const onSubmitInfo = (e) => {
     e.preventDefault();
-    if (values.name === resultName && values.email === email) {
-      setSubmitErr('Данные не изменены');
-    } else {
-      mainApi
-        .changeProfileInfo(values)
-        .then(() => {
-          setResultName(values.name);
-          setEmail(values.email);
-          updateContextValue(values);
-          setSaveButton(false);
-          setPopupMessage('Данные успешно изменены');
-          setPopupState(true);
-          closePopup();
-          setValues({ name: '', email: '' });
-        })
-        .catch((err) => {
-          setPopupMessage('Что-то пошло не так');
-          setPopupState(true);
-          closePopup();
-          if (err.statusCode === 400) {
-            setSubmitErr(err.message);
-          } else if (err.statusCode === 401) {
-            localStorage.clear();
-            navigate('/');
-          } else {
-            setSubmitErr('При обновлении профиля произошла ошибка.');
-          }
-          console.log(err);
-        });
-    }
+    mainApi
+      .changeProfileInfo(values)
+      .then(() => {
+        setResultName(values.name);
+        setEmail(values.email);
+        updateContextValue(values);
+        setSaveButton(false);
+        setPopupMessage('Данные успешно изменены');
+        setPopupState(true);
+        closePopup();
+        setValues({ name: '', email: '' });
+      })
+      .catch((err) => {
+        setPopupMessage('Что-то пошло не так');
+        setPopupState(true);
+        closePopup();
+        if (err.statusCode === 400) {
+          setSubmitErr(err.message);
+        } else if (err.statusCode === 401) {
+          localStorage.clear();
+          navigate('/');
+        } else {
+          setSubmitErr('При обновлении профиля произошла ошибка.');
+        }
+        console.log(err);
+      });
   };
   const onEdit = () => {
     setSaveButton(true);
+    setValues({ name: resultName, email });
   };
   useEffect(() => {
     if (currentUser) {
@@ -106,6 +103,13 @@ const Profile = ({ updateContextValue }) => {
       setResultName(user.name);
     }
   }, [currentUser, updateContextValue]);
+
+  useEffect(() => {
+    if (values.name === resultName && values.email === email) {
+      setSubmitErr('Данные не изменены');
+    }
+  }, [email, resultName, values.email, values.name]);
+  console.log(values);
   return (
     <>
       <Header />

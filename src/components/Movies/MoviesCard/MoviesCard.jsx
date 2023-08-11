@@ -12,54 +12,70 @@ const MoviesCard = ({
   movieDuration,
   moviePic,
   trailerLink,
-  savedFilteredMovies,
   movieId,
   deleteMovie,
   savedMovies,
   isSaved,
+  onSearchedSavedMovies,
+  searchedSavedMovies,
 }) => {
   const location = useLocation();
   const onClickLike = (e) => {
     const chosenMovie = e.target.closest('div');
     if (location.pathname === '/movies') {
+      const savedFilteredMovies = JSON.parse(
+        localStorage.getItem('filteredMovies')
+      );
       if (e.target.src.includes('Inactive')) {
         const savedMovie = savedFilteredMovies.filter(
           (movie) => movie.id === Number(chosenMovie.id)
         );
-        mainApi.postMovie(savedMovie[0])
+        mainApi
+          .postMovie(savedMovie[0])
           .then(() => {
             e.target.src = likeIconActive;
-            localStorage.setItem('filteredMovies', JSON.stringify(savedFilteredMovies.reduce((arr, movie, i) => {
-              arr.push(movie);
-              if (movie.id === Number(chosenMovie.id)) {
-                arr[i].saved = true;
-              }
-              return arr;
-            }, [])));
+            console.log(savedFilteredMovies);
+            console.log();
+            localStorage.setItem(
+              'filteredMovies',
+              JSON.stringify(
+                savedFilteredMovies.reduce((arr, movie, i) => {
+                  arr.push(movie);
+                  if (movie.id === Number(chosenMovie.id)) {
+                    arr[i].saved = true;
+                  }
+                  return arr;
+                }, [])
+              )
+            );
           })
           .catch((err) => {
             console.log(err);
           });
       } else if (e.target.src.includes('Active')) {
-        mainApi.getSavedMovies()
+        mainApi
+          .getSavedMovies()
           .then((res) => {
             const savedMovie = res.filter(
               (movie) => movie.movieId === Number(chosenMovie.id)
             )[0];
             console.log(savedMovie);
             mainApi
-              .deleteCardFromServer(
-                savedMovie._id
-              )
+              .deleteCardFromServer(savedMovie._id)
               .then(() => {
                 e.target.src = likIconInactive;
-                localStorage.setItem('filteredMovies', JSON.stringify(savedFilteredMovies.reduce((arr, movie, i) => {
-                  arr.push(movie);
-                  if (movie.id === savedMovie.movieId) {
-                    arr[i].saved = false;
-                  }
-                  return arr;
-                }, [])));
+                localStorage.setItem(
+                  'filteredMovies',
+                  JSON.stringify(
+                    savedFilteredMovies.reduce((arr, movie, i) => {
+                      arr.push(movie);
+                      if (movie.id === savedMovie.movieId) {
+                        arr[i].saved = false;
+                      }
+                      return arr;
+                    }, [])
+                  )
+                );
               })
               .catch((err) => console.log(err));
           })
@@ -78,14 +94,28 @@ const MoviesCard = ({
               (movie) => movie.movieId !== Number(chosenMovie.id)
             )
           );
-          const filteredMovies = JSON.parse(localStorage.getItem('filteredMovies'));
+          const filteredMovies = JSON.parse(
+            localStorage.getItem('filteredMovies')
+          );
           const updatedMovies = filteredMovies.map((movie) => {
             if (movie.id === Number(chosenMovie.id)) {
               movie.saved = false;
             }
             return movie;
           });
-
+          if (searchedSavedMovies) {
+            console.log(
+              searchedSavedMovies.filter(
+                (movie) => movie.movieId !== Number(chosenMovie.id)
+              )
+            );
+            console.log(1);
+            onSearchedSavedMovies(
+              searchedSavedMovies.filter(
+                (movie) => movie.movieId !== Number(chosenMovie.id)
+              )
+            );
+          }
           localStorage.setItem('filteredMovies', JSON.stringify(updatedMovies));
         })
         .catch((err) => console.log(err));

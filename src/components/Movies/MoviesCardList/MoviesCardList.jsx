@@ -13,6 +13,7 @@ const MoviesCardList = ({
   searchedSavedMovies,
   isSearched,
   deleteMovie,
+  onSearchedSavedMovies
 }) => {
   const location = useLocation();
   const [elseButton, setElseButton] = useState(false);
@@ -77,7 +78,7 @@ const MoviesCardList = ({
         setElseButton(false);
       }
     }
-  }, [location.pathname, maxMoviesToShow, searchedSavedMovies, savedMovies]);
+  }, [location.pathname, maxMoviesToShow, savedMovies]);
 
   const renderMovies = (movies, maxMoviesToShow, savedFilteredMovies) => {
     if (movies !== '' && Array.isArray(movies)) {
@@ -87,6 +88,8 @@ const MoviesCardList = ({
           : movies;
       return slicedMovies.map((movie, index) => (
         <MoviesCard
+          searchedSavedMovies={searchedSavedMovies}
+          onSearchedSavedMovies={onSearchedSavedMovies}
           isSaved={movie.saved}
           savedMovies={savedMovies}
           deleteMovie={deleteMovie}

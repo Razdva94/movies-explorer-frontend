@@ -32,6 +32,8 @@ const App = () => {
   };
   const updateContextValue = (value) => {
     setCurrentUser(value);
+    localStorage.setItem('user', JSON.stringify(value));
+    console.log(value);
   };
   if (location.pathname === '/movies') {
     localStorage.setItem('location', '/movies');

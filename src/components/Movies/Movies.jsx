@@ -39,9 +39,6 @@ const Movies = ({ savedMovies, deleteMovie }) => {
     localStorage.getItem('filteredMovies')
   );
   const filterSearch = (string, res) => {
-    if (string.trim() === '') {
-      return '';
-    }
     let filteredMovies = res.filter(
       (movie) =>
         movie.nameRU.toLowerCase().indexOf(string.toLowerCase()) !== -1 ||
@@ -79,7 +76,10 @@ const Movies = ({ savedMovies, deleteMovie }) => {
       }
     }
   };
-
+  const onSearchedSavedMovies = (value) => {
+    console.log(value);
+    setSearchedSavedMovies(value);
+  };
   const onSetMovie = (movies, savedMovies) => {
     return movies.reduce((arr, movie) => {
       arr.push(movie);
@@ -105,7 +105,7 @@ const Movies = ({ savedMovies, deleteMovie }) => {
           handleSearch(searchValue, onSetMovie(movies, savedMovies));
         })
         .catch((error) => {
-          if (error.statusCode === 401){
+          if (error.statusCode === 401) {
             localStorage.clear();
             navigate('/');
           }
@@ -141,6 +141,13 @@ const Movies = ({ savedMovies, deleteMovie }) => {
       setTumbValue(savedTumbValue);
     }
   }, []);
+  // useEffect(() => {
+  //   if (location.pathname === '/saved-movies') {
+  //     if (searchedSavedMovies){
+  //       onSearchedSavedMovies(searchedSavedMovies);
+  //     }
+  //   }
+  // }, [searchedSavedMovies, onSearchedSavedMovies]);
 
   return (
     <>
@@ -169,6 +176,7 @@ const Movies = ({ savedMovies, deleteMovie }) => {
           savedMovies={savedMovies}
           searchedSavedMovies={searchedSavedMovies || ''}
           isSearched={isSearched}
+          onSearchedSavedMovies={onSearchedSavedMovies}
         />
       )}
       <Footer />
