@@ -3,14 +3,19 @@
   padding-left: 70px;
   padding-right: 70px;
   padding-top: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .movies-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  grid-template-columns: repeat(auto-fit, 269px);
   column-gap: 20px;
   row-gap: 38px;
   min-height: 295px;
+  justify-content: center;
+  max-width: 1420px;
 }
 
 .movies-container_button-container {
@@ -37,6 +42,11 @@
   margin-top: 60px;
 }
 
+@media screen and (max-width: 1200px) {
+  .movies {
+    align-items: normal;
+  }
+}
 @media screen and (max-width: 850px) {
   .movies {
     padding-left: 30px;
@@ -51,7 +61,7 @@
   }
 }
 
-@media screen and (max-width: 450px){
+@media screen and (max-width: 450px) {
   .movies-container {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     column-gap: 30px;

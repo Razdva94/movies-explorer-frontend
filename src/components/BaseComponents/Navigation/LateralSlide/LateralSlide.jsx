@@ -1,10 +1,11 @@
 import React from 'react';
 import './LateralSlide.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import cross from '../../../../images/cross.svg';
 import profile from '../../../../images/profile.svg';
 
 const LateralSlide = ({ onSlideClose }) => {
+  const location = useLocation();
   const navigate = useNavigate();
   const onNavigateMain = () => {
     navigate('/');
@@ -28,19 +29,24 @@ const LateralSlide = ({ onSlideClose }) => {
           onClick={onSlideClose}
         />
         <p
-          className="lateral-slide__text lateral-slide__text_margin"
+          className={`lateral-slide__text lateral-slide__text_margin ${location.pathname === '/' && 'lateral-slide__text_active'}`}
           onClick={onNavigateMain}
         >
           Главная
         </p>
         <p
-          className="lateral-slide__text lateral-slide__text_margin lateral-slide__text_active"
+          className={`lateral-slide__text lateral-slide__text_margin ${
+            location.pathname === '/movies' && 'lateral-slide__text_active'
+          }`}
           onClick={onNavigateMovies}
         >
           Фильмы
         </p>
         <p
-          className="lateral-slide__text lateral-slide__text_margin"
+          className={`lateral-slide__text lateral-slide__text_margin ${
+            location.pathname === '/saved-movies' &&
+            'lateral-slide__text_active'
+          }`}
           onClick={onNavigateSavedMovies}
         >
           Сохранённые фильмы

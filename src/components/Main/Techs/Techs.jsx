@@ -16,8 +16,8 @@ const Techs = () => {
         дипломном проекте.
       </p>
       <div className="techs__container">
-        {techs.map((tech) => {
-          return <div className="tech__name">{tech}</div>;
+        {techs.map((tech, i) => {
+          return <div className="tech__name" key={i}>{tech}</div>;
         }
         )}
       </div>
