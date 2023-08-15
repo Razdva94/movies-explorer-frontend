@@ -41,6 +41,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  margin: 0;
 }
 
 .profile__input::placeholder {
@@ -74,6 +75,9 @@
   margin: 0;
   width: 122px;
   text-align: right;
+  background-color: #202020;
+  border:none;
+  transform: translateY(-27%);
 }
 
 .profile__change {

@@ -9,11 +9,11 @@ import { CurrentUserContext } from '../../../contexts/CurrentUserContext';
 import Popup from '../../Popup/Popup';
 
 const Profile = ({ updateContextValue }) => {
-  const currentUser = useContext(CurrentUserContext);
-  const [popupMessage, setPopupMessage] = useState('');
-  const { values, handleChange, setValues } = useForm({ name: '', email: '' });
   const [resultName, setResultName] = useState('');
   const [email, setEmail] = useState('');
+  const { values, handleChange, setValues } = useForm({ name: resultName, email });
+  const currentUser = useContext(CurrentUserContext);
+  const [popupMessage, setPopupMessage] = useState('');
   const [saveButton, setSaveButton] = useState(false);
   const [errors, setErrors] = useState({});
   const [submitErr, setSubmitErr] = useState('');
@@ -70,7 +70,6 @@ const Profile = ({ updateContextValue }) => {
         setPopupMessage('Данные успешно изменены');
         setPopupState(true);
         closePopup();
-        setValues({ name: '', email: '' });
       })
       .catch((err) => {
         setPopupMessage('Что-то пошло не так');
@@ -96,20 +95,19 @@ const Profile = ({ updateContextValue }) => {
       setResultName(currentUser.name);
       setEmail(currentUser.email);
       localStorage.setItem('user', JSON.stringify(currentUser));
+      setValues({ name: currentUser.name, email: currentUser.email });
     } else {
       const user = JSON.parse(localStorage.getItem('user'));
+      setValues({ name: user.name, email: user.email });
       updateContextValue(user);
-      setEmail(user.email);
-      setResultName(user.name);
     }
-  }, [currentUser, updateContextValue]);
+  }, [currentUser, setValues, updateContextValue]);
 
   useEffect(() => {
     if (values.name === resultName && values.email === email) {
       setSubmitErr('Данные не изменены');
     }
   }, [email, resultName, values.email, values.name]);
-  console.log(values);
   return (
     <>
       <Header />
@@ -125,35 +123,35 @@ const Profile = ({ updateContextValue }) => {
           onSubmit={onSubmitInfo}
         >
           <div className="profile__input-container">
+            <p className="profile__input">Имя</p>
+            <p className="register__error" style={{ margin: 0 }}>
+              {errors.name}
+            </p>
             <input
               type="text"
-              className="profile__input"
+              className="profile__input-result"
               placeholder="Имя"
               disabled={!saveButton}
               name="name"
               value={values.name}
               onChange={onInputChange}
             />
-            <p className="register__error" style={{ margin: 0 }}>
-              {errors.name}
-            </p>
-            <p className="profile__input-result">{resultName}</p>
           </div>
           <div className="line line_color_grey profile__line_margin" />
           <div className="profile__input-container">
+            <p className="profile__input">E-mail</p>
+            <p className="register__error" style={{ margin: 0 }}>
+              {errors.email}
+            </p>
             <input
               type="text"
-              className="profile__input"
+              className="profile__input-result"
               placeholder="E-mail"
               disabled={!saveButton}
               name="email"
               value={values.email}
               onChange={onInputChange}
             />
-            <p className="register__error" style={{ margin: 0 }}>
-              {errors.email}
-            </p>
-            <p className="profile__input-result">{email}</p>
           </div>
           {saveButton && (
             <div className="register__server-error-container">
