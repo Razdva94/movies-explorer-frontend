@@ -119,10 +119,9 @@ class MainApi {
   }
 }
 const mainApi = new MainApi({
-  baseUrl: 'http://localhost:3000',
+  baseUrl: 'https://api.portfolio-project.nomoredomains.xyz',
   headers: {
     'Content-Type': 'application/json',
   },
 });
-// https://api.portfolio-project.nomoredomains.xyz
 export default mainApi;
