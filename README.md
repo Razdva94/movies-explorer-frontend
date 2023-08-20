@@ -1,4 +1,4 @@
-# Проект: "Movies". 
+# Проект: "Movies"(frontend). 
 
 ## Технологии
 ![React](https://img.shields.io/badge/-React-61daf8?logo=react&logoColor=black)
